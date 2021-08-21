@@ -255,7 +255,7 @@ function documentLoaded(){
         UserAccount.style ="display: none"
     }
     
-    // Filter_Category('ALL')
+    Filter_Category('ALL')
 
     for(i=0; i< NumberProductCart ; i++ ) {
         $('.cart-list-ul').innerHTML += `<li class="cart-list-li" id="cartitem-1">
@@ -269,7 +269,7 @@ function documentLoaded(){
          <i class="fas fa-times"></i>
         </li>`
     }
-    setInterval(SlideNextFuntion,15000)
+    setInterval(SlideNextFuntion,5000)
 }
 
 documentLoaded()
