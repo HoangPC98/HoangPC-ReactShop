@@ -139,7 +139,7 @@
                 </div>
                 <!-- SearchBar -->
                 <div class="header__searchbar">
-                    <input type="text" class="header__searchbar-inp">
+                    <input type="text" class="header__searchbar-inp" placeholder="Bạn đang tìm gì...">
                     <div class="select-item">
                         <span class="select-label h-o-m">Trong Shop</span>
                         <i class="fas fa-chevron-down"></i>
@@ -207,17 +207,18 @@
                             </span>
                         </div>
                         <ul class="category__list">
-                            <li class="category__item" style="color: var(--primary-color); font-size: 109%;">
+                            <li class="category__item" style="color: var(--primary-color); font-size: 109%;" onclick="Filter_Category('ALL')">
                                 <div class="highlight-icon">
                                     <i class="fas fa-caret-right"></i>
                                 </div>
-                                Điện thoại
+                                Tất cả sản phẩm
                             </li>
-                            <li class="category__item"> <div class="highlight-icon"></div> Laptop</li>
-                            <li class="category__item"> <div class="highlight-icon"></div> Tablet</li>
-                            <li class="category__item"> <div class="highlight-icon"></div> Smart Watch </li>
-                            <li class="category__item"> <div class="highlight-icon"></div> Âm thanh </li>
-                            <li class="category__item"> <div class="highlight-icon"></div> Phụ kiện</li>
+                            <li class="category__item" onclick="Filter_Category('iPhone')"> <div class="highlight-icon"></div> iPhone</li>
+                            <li class="category__item" onclick="Filter_Category('SAMSUNG')"> <div class="highlight-icon"></div> SAMSUNG</li>
+                            <li class="category__item" onclick="Filter_Category('OPPO')"> <div class="highlight-icon"></div> OPPO </li>
+                            <li class="category__item" onclick="Filter_Category('Vsmart')"> <div class="highlight-icon"></div> Vsmart </li>
+                            <li class="category__item" onclick="Filter_Category('Xiaomi')"> <div class="highlight-icon"></div> Xiaomi </li>
+                            <li class="category__item" onclick="Filter_Category('Realme')"> <div class="highlight-icon"></div> Realme </li>
                         </ul>
                     </nav>
                 </div>
@@ -225,16 +226,18 @@
                     <div class="product__filter">
                         <div class="product__filter-f ">
                             <span class="label c-0">Sắp xếp </span>
-                            <button class="btn btn-f btn-primary">Phổ biến</button>
-                            <button class="btn btn-f">Mới nhất</button>
-                            <button class="btn btn-f">Bán chạy</button>
-                            <div class="select-item btn-f">
-                                <span class="select-label">Giá</span>
-                                <i class="fas fa-chevron-down"></i>
-                                <ul class="select-ul">
-                                    <li> <span class="item-li">Từ thấp đến cao</span> </li>
-                                    <li> <span class="item-li">Từ cao đến thấp</span> </li>
+                            <button class="btn btn-f filter-all btn-primary" onclick="Filter_Category('ALL')">Tất cả</button>
+                            <button class="btn btn-f filter-sale-off " onclick="Filter_f('sale-off')">Đang giảm giá</button>
+                            <button class="btn btn-f filter-lastest" onclick="Filter_f('lastest')">Mới nhất</button>
+                            <button class="btn btn-f filter-best-selling" onclick="Filter_f('best-selling')">Bán chạy</button>
+                            <div class="filter-btn-select-price btn-f" style="cursor: pointer;">
+                                <span class="sort-label">Theo giá :</span>
+                                <!-- <i class="fas fa-chevron-down"></i> -->
+                                <ul class="select-filter-price-ul hidden">
+                                    <li onclick="SortThis('increase')"> <span class="item-li">Từ thấp đến cao</span> </li>
+                                    <li onclick="SortThis('decrease')"> <span class="item-li">Từ cao đến thấp</span> </li>
                                 </ul>
+                                <span class="sort-selected"></span>
                             </div>
                         </div>
                         <div class="product__filter-page h-o-m">
@@ -248,43 +251,21 @@
                     </div>
                     <nav class="category-mobile l-0 m-display c-display">
                         <ul class="category-mobile-ul">
-                            <li class="category-mobile-li btn-primary">Điện thoại </li>
-                            <li class="category-mobile-li">Tablet</li>
-                            <li class="category-mobile-li">Laptop</li>
-                            <li class="category-mobile-li">Smart Watch</li>
-                            <li class="category-mobile-li">Âm thanh</li>
-                            <li class="category-mobile-li">Phụ kiện</li>
+                            <li class="category-mobile-li btn-primary" onclick="Filter_Category('iPhone')">iPhone</li>
+                            <li class="category-mobile-li" onclick="Filter_Category('SAMSUNG')">SAMSUNG</li>
+                            <li class="category-mobile-li" onclick="Filter_Category('OPPO')">OPPO</li>
+                            <li class="category-mobile-li" onclick="Filter_Category('Vsmart')">Vsmart</li>
+                            <li class="category-mobile-li" onclick="Filter_Category('Xiaomi')">Xiaomi</li>
+                            <li class="category-mobile-li" onclick="Filter_Category('Realme')">Realme</li>
                         </ul>
                     </nav>
+                    <div class="search-result">
+                        Kết quả tìm kiếm:
+                        <span class="search-result-inp"></span>
+                    </div>
                     <div class="product__item ">
                         <ul class="product__item-ul row">
-                            <li class="product__item-li col l-2-4 m-3 c-6">
-                                <div class="product__item-li-auth">
-                                    <a href="./cart.html" class="product__item-li-link">
-                                        <img src="./img/tb1.jpg" alt="" class="product__item-img">
-                                        <div class="product__item-name title2">Name đây là mô tả và mô tả sản phẩm dịch vụ chăm sóc khách hàng trọn vẹn</div>
-                                        <div class="product__item-price">
-                                            <span class="product__item-price--origin">1.200.000đ</span>
-                                            <span class="product__item-price--saleoff">999.000đ</span>
-                                        </div>
-                                        <div class="product__item-addition" >
-                                            <i href="" class="far fa-heart"></i>
-                                            <div class="star">
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                            </div>
-                                            <span class="sold">Đã bán 69</span>
-                                        </div>
-                                        <div class="product__item-address">Ha Noi</div>
-                                    </a>
-                                    <div class="product__item-like">Yêu thích</div>
-                                    <div class="product__item-sale-percent">20% GIẢM</div>
-                                </div>
-                            </li>
-                            
+                            <!-- inner HTML khi render Website -->
                         </ul>
                     </div>
                     <div class="product__page-control-bottom flex-row">
@@ -465,7 +446,9 @@
         </div>
         <div class="modal__overlay"></div>
     </div>
+    <script type="text/javascript" src="./JS/data.js"></script>
     <script type="text/javascript" src="./JS/main.js"></script>
     <script type="text/javascript" src="./JS/ReactValidation.js"></script>
+    
 </body>
 </html>

@@ -244,7 +244,7 @@
 .header__searchbar{
     width: 100%;
     max-width: 1000px;
-    height: 36px;
+    height: 40px;
     margin: 0 20px;
     border-radius: 2px;
     display: flex;
@@ -255,7 +255,7 @@
     border: 2px solid #fff;
 }
 .header__searchbar-inp{
-    height: 33px;
+    height: 100%;
     flex:1;
     font-size: 1rem;
     border-color: transparent;
@@ -264,6 +264,7 @@
     position: relative;
     background-color: white;
     width: fit-content;
+    height: 100%;
     min-height: 30px;
     border: 2px solid;
     border-color: #fff #fff #fff #999;
@@ -334,7 +335,7 @@
 }
 
 .header__searchbar-goto{
-    height: 32px;
+    height: 100%;
     width: 50px;
     background-color: var(--primary-color);
     border: none;

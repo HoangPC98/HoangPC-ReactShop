@@ -26,7 +26,6 @@ let BtnNextPage = $('.page__btn-next')
 let NumberProductCart = 7;
 let isLoggedIn = false;
 let pageQuantity = 4;
-let productQuantity = 12;
 // Main Function
 
 // Highlight Item-li On List-ul
@@ -45,11 +44,55 @@ $('.page-list').onclick = function(e){
     }
 }
 
-// CheckValidate = function(type) {
-//     if(type === 'user'){
-//         $('.auth-form__input.user').parentNode.children[2].innerHTML = 'user-name'
-//     }
-// }
+$('.filter-btn-select-price').onclick = function (){
+    console.log($('.select-filter-price-ul').classList)
+    if($('.select-filter-price-ul').classList.contains('hidden')){
+        $('.select-filter-price-ul').classList.remove('hidden')
+        $('.select-filter-price-ul').classList.add('show')
+    } else if($('.select-filter-price-ul').classList.contains('show')){
+        $('.select-filter-price-ul').classList.remove('show')
+        $('.select-filter-price-ul').classList.add('hidden')
+    }
+}
+
+$('.select-filter-price-ul').onclick = function (e){
+    if(e.target.closest('.item-li')){
+
+        $('.sort-selected').style = "color: var(--primary-color); font-weight: 500;"
+        $('.sort-selected').innerHTML = e.target.innerHTML
+    }
+}
+
+function SortThis(arg){
+    if(arg=='increase'){
+        let t = {}
+        for(i=0 ; i < product__list.length ; i++)
+            for(j=i+1 ; j< product__list.length ; j++){
+                if(product__list[j].price_real < product__list[i].price_real){
+                    t = product__list[i] 
+                    product__list[i] = product__list[j] 
+                    product__list[j] = t
+                }
+            }
+        $('.product__item-ul').innerHTML =""
+        for(item of product__list)
+            InnerHTML_Product(item)
+    }
+    if(arg=='decrease'){
+        let t = {}
+        for(i=0 ; i < product__list.length ; i++)
+            for(j=i+1 ; j< product__list.length ; j++){
+                if(product__list[j].price_real > product__list[i].price_real){
+                    t = product__list[i] 
+                    product__list[i] = product__list[j] 
+                    product__list[j] = t
+                }
+            }
+        $('.product__item-ul').innerHTML =""
+        for(item of product__list)
+            InnerHTML_Product(item)
+    }
+}
 
 // SlideBarFuntion()
 let translateX = 0;
@@ -73,6 +116,122 @@ function SlidePrevFuntion(){
     // console.log(translateX)
 }
 
+// Seacrch Goto Function
+$('.header__searchbar-goto').onclick = function(){
+    let keyword = $('.header__searchbar-inp').value
+    $('.search-result-inp').innerHTML = keyword
+
+    $('.product__item-ul').innerHTML =""
+    let process_keyword = keyword.toLocaleLowerCase().replace(/ /g, "")
+    // Replace keyword
+    let newkeyword=''
+        // let replace_key = ['ip','ss']
+        // if(process_keyword.includes('ip'))
+        //     newkeyword = process_keyword.replace('ip', 'iphone')
+        if(process_keyword.includes('ss'))
+            newkeyword = process_keyword.replace('ss','samsung')
+        else{
+            newkeyword = process_keyword
+        }
+    // 
+        console.log(newkeyword)
+    product__list.forEach(function(item){
+        let process_item = item.name.toLowerCase().replace(/\s/g, "")
+        if(process_item.includes(newkeyword))
+            InnerHTML_Product(item)
+    })
+}
+
+// Filter_Category Funtion
+
+function Filter_Category(category){
+    // Mỗi lần Filter thì Reset lại Product list về 0
+    $('.product__item-ul').innerHTML =""
+    if(category === 'ALL'){
+        product__list.forEach(function(item){
+            InnerHTML_Product(item)
+        })
+    }
+    product__list.forEach(function(item){
+        if(item.cate === category){
+            InnerHTML_Product(item)
+        }
+    })
+}
+
+// Fillter_F Function
+
+function Filter_f(filter){
+    $('.product__item-ul').innerHTML =""
+    if(filter === 'sale-off'){       
+        product__list.forEach(function(item){
+            if(item.price_saleoff > 0 ){
+                InnerHTML_Product(item)
+            }
+        })
+    }
+    if(filter === 'best-selling'){
+        let t = {}
+        for(i=0 ; i < product__list.length ; i++)
+            for(j=i+1 ; j< product__list.length ; j++){
+                if(product__list[j].quantity > product__list[i].quantity){
+                    t = product__list[i] 
+                    product__list[i] = product__list[j] 
+                    product__list[j] = t
+                }
+            }
+        for(item of product__list)
+            InnerHTML_Product(item)
+    }
+
+    if(filter === 'lastest'){
+        let t = {}
+        for(i=0 ; i < product__list.length ; i++)
+            for(j=i+1 ; j< product__list.length ; j++){
+                if(product__list[j].id > product__list[i].id){
+                    t = product__list[i] 
+                    product__list[i] = product__list[j] 
+                    product__list[j] = t
+                }
+            }
+        for(item of product__list)
+            InnerHTML_Product(item)
+    }
+}
+
+
+
+// InnerHTML Product Funtion
+
+function InnerHTML_Product(product){
+        // Inner thêm vào element
+        $('.product__item-ul').innerHTML += `<li class="product__item-li col l-2-4 m-3 c-6">
+            <div class="product__item-li-auth">
+                <a href="./cart.html" class="product__item-li-link">
+                    <img src="${product.img}" alt="" class="product__item-img">
+                    <div class="product__item-name title2">${product.name}</div>
+                    <div class="product__item-price">
+                        <span class="product__item-price--origin">${product.price_origin} đ</span>
+                        <span class="product__item-price--saleoff">${product.price_real} đ</span>
+                    </div>
+                    <div class="product__item-addition" >
+                        <i href="" class="far fa-heart"></i>
+                        <div class="star">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <span class="sold">Đã bán ${product.quantity}</span>
+                    </div>
+                    <div class="product__item-address">Ha Noi</div>
+                </a>
+                <div class="product__item-like">Yêu thích</div>
+                <div class="product__item-sale-percent">${Math.round(product.price_saleoff/product.price_origin*100)}% GIẢM</div>
+            </div>
+        </li>`
+}
 
 function documentLoaded(){
     if(NumberProductCart>0){
@@ -96,35 +255,7 @@ function documentLoaded(){
         UserAccount.style ="display: none"
     }
     
-    for(i=0; i<productQuantity; i++){
-        // Inner thêm vào element
-        $('.product__item-ul').innerHTML += `<li class="product__item-li col l-2-4 m-3 c-6">
-            <div class="product__item-li-auth">
-                <a href="./cart.html" class="product__item-li-link">
-                    <img src="./img/tb1.jpg" alt="" class="product__item-img">
-                    <div class="product__item-name title2">Name đây là mô tả và mô tả sản phẩm dịch vụ chăm sóc khách hàng trọn vẹn</div>
-                    <div class="product__item-price">
-                        <span class="product__item-price--origin">1.200.000đ</span>
-                        <span class="product__item-price--saleoff">999.000đ</span>
-                    </div>
-                    <div class="product__item-addition" >
-                        <i href="" class="far fa-heart"></i>
-                        <div class="star">
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                        </div>
-                        <span class="sold">Đã bán 69</span>
-                    </div>
-                    <div class="product__item-address">Ha Noi</div>
-                </a>
-                <div class="product__item-like">Yêu thích</div>
-                <div class="product__item-sale-percent">20% GIẢM</div>
-            </div>
-        </li>`
-    }
+    // Filter_Category('ALL')
 
     for(i=0; i< NumberProductCart ; i++ ) {
         $('.cart-list-ul').innerHTML += `<li class="cart-list-li" id="cartitem-1">
@@ -138,7 +269,7 @@ function documentLoaded(){
          <i class="fas fa-times"></i>
         </li>`
     }
-    setInterval(SlideNextFuntion,4000)
+    setInterval(SlideNextFuntion,15000)
 }
 
 documentLoaded()
@@ -221,7 +352,6 @@ CartList.onclick = function(e) {
 
 CategoryList.onclick = function(e) {
     if(e.target.closest('.category__item')){
-        console.log($$('.category__item'))
         $$('.category__item').forEach(function(thisItem){
             thisItem.style = "color: black ; font-size: 100%;"
             if($('.fa-caret-right'))
@@ -329,4 +459,3 @@ $('.select-item').onclick= function(){
         n= true;
     }    
 }
-
