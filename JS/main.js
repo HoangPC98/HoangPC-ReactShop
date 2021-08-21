@@ -18,8 +18,7 @@ let CategoryList = $('.category__list')
 
 let CartRemoveIcon = $('.cart-remove-icon')
 
-let BtnPrevPage = $('.page__btn-prev')
-let BtnNextPage = $('.page__btn-next')
+
 
 
 //main arrgument
@@ -32,17 +31,6 @@ let isLoggedIn = false;
 
 // HighlightItem_li 
 
-// $('.page-list').onclick = function(e){
-//     console.log(e.target)
-//     if(e.target.closest('.item-li')){
-//         console.log(this.children)
-//         $$('.item-li').forEach(function(item){
-//             if(item.classList.contains('btn-primary'))
-//                 item.classList.remove('btn-primary')
-//         })
-//         e.target.classList.add('btn-primary')
-//     }
-// }
 
 $('.filter-btn-select-price').onclick = function (){
     console.log($('.select-filter-price-ul').classList)
@@ -216,8 +204,7 @@ function SortThis(arg){
                     product__list[i] = product__list[j] 
                     product__list[j] = t
                 }
-            }
-
+            } 
         product_Filter = []
         for(item of product__list){
             product_Filter.push(item)
@@ -226,34 +213,29 @@ function SortThis(arg){
     curentPage=1
     InnerHTML(product_Filter)
 }
-BtnNextPage.onclick = function(){
-    if(curentPage >= pageQuantity){
-        curentPage = 1
-    }
-    else{
-        curentPage++
-    }
+
+$('.page-list').onclick = function(e){
+    curentPage = e.target.innerHTML
     $('.page__curent').innerHTML = curentPage
     InnerHTML(product_Filter)
+    $$('.page-item').forEach(function(pitem){
+        if(pitem.classList.contains('btn-primary')){
+            pitem.classList.remove('btn-primary')
+        }
+    })
+    $$('.page-item')[curentPage-1].classList.add('btn-primary')
 }
-BtnPrevPage.onclick = function(){
-    if(curentPage <= 1){
-        curentPage = pageQuantity
-    }
-    else{
-        curentPage--
-    }
-    $('.page__curent').innerHTML =curentPage
-    InnerHTML(product_Filter)
-}   
 // InnerHTML Product Funtion
-
 function InnerHTML(products){
         $('.product__item-ul').innerHTML =""
         pageQuantity = Math.ceil(products.length/npp)
+        $('.page-list').innerHTML = '<li class="page-item item-li btn-primary">1</li>'
+        for(ind=2 ; ind <= pageQuantity ; ind++){
+            $('.page-list').innerHTML += `<li class="page-item item-li">${ind}</li>`
+        }
         $('.page-sum').innerHTML = pageQuantity
         for(i=0 ; i< products.length ; i++){
-            if((curentPage-1)*15 <= i && i < curentPage*15){
+            if((curentPage-1)*npp <= i && i < curentPage*npp){
                 //
                 $('.product__item-ul').innerHTML += `<li class="product__item-li col l-2-4 m-3 c-6">
                     <div class="product__item-li-auth">
@@ -283,6 +265,24 @@ function InnerHTML(products){
                 </li>`
             }
         }
+}
+$('.page__btn-next').onclick = function() {
+    if(curentPage >= pageQuantity){
+        curentPage = 1
+    }
+    else{
+        curentPage++
+    }
+    $('.page__curent').innerHTML = curentPage
+    $$('.page-item').forEach(function(pitem){
+        if(pitem.classList.contains('btn-primary')){
+
+            pitem.classList.remove('btn-primary')
+            console.log(pitem.classList)
+            // documentLoaded()
+        }
+    })
+    InnerHTML(product_Filter)
 }
 
 function documentLoaded(){
@@ -321,8 +321,48 @@ function documentLoaded(){
          <i class="fas fa-times"></i>
         </li>`
     }
+
+    $$('.page__btn-next').forEach(function(item){
+        item.onclick = function(){
+            if(curentPage >= pageQuantity){
+                curentPage = 1
+            }
+            else{
+                curentPage++
+            }
+            $('.page__curent').innerHTML = curentPage
+            InnerHTML(product_Filter)
+            $$('.page-item.item-li').forEach(function(pitem){
+                if(pitem.classList.contains('btn-primary')){
+                    pitem.classList.remove('btn-primary')
+                }
+            })
+            $$('.page-item')[curentPage-1].classList.add('btn-primary')
+        }
+    })
+
+    $$('.page__btn-prev').forEach(function(item){
+        item.onclick = function(){
+            if(curentPage <=1){
+                curentPage = pageQuantity
+            }
+            else{
+                curentPage--
+            }
+            $('.page__curent').innerHTML = curentPage
+            InnerHTML(product_Filter)
+            $$('.page-item').forEach(function(pitem){
+                if(pitem.classList.contains('btn-primary')){
+                    pitem.classList.remove('btn-primary')
+                }
+            })
+            $$('.page-item')[curentPage-1].classList.add('btn-primary')          
+        }
+    })
+
     setInterval(SlideNextFuntion,5000)
 }
+
 
 documentLoaded()
 

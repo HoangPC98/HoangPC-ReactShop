@@ -1,6 +1,6 @@
 
 let category = ['iPhone','SAMSUNG', 'OPPO','Vsmart','Xiaomi','Realme']
-let name_ip = ['XR', 'XS Max','11','11 Pro Max','12 Mini', '12 Pro', '12 Pro Max']
+let name_ip = ['8 Plus', 'SE 2', 'XR', 'XS Max','11','11 Pro Max','12 Mini', '12 Pro', '12 Pro Max']
 let name_ss = ['S21','S20 Ultra','S21 Ultra','Note20 Ultra', 'Z Flip','Z Fold 3']
 let name_op = ['Reno 4', 'Reno 5','Reno 6', 'A74', 'A94', 'A54', 'Find X3 Pro']
 let name_vi = ['Aris','Star 4', 'Joy 4', 'Active 3']
