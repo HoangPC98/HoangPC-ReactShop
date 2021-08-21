@@ -321,7 +321,7 @@ function documentLoaded(){
          <i class="fas fa-times"></i>
         </li>`
     }
-    setInterval(SlideNextFuntion,15000)
+    setInterval(SlideNextFuntion,5000)
 }
 
 documentLoaded()
