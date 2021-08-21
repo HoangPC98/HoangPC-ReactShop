@@ -25,24 +25,24 @@ let BtnNextPage = $('.page__btn-next')
 //main arrgument
 let NumberProductCart = 7;
 let isLoggedIn = false;
-let pageQuantity = 4;
+
 // Main Function
 
 // Highlight Item-li On List-ul
 
 // HighlightItem_li 
 
-$('.page-list').onclick = function(e){
-    console.log(e.target)
-    if(e.target.closest('.item-li')){
-        console.log(this.children)
-        $$('.item-li').forEach(function(item){
-            if(item.classList.contains('btn-primary'))
-                item.classList.remove('btn-primary')
-        })
-        e.target.classList.add('btn-primary')
-    }
-}
+// $('.page-list').onclick = function(e){
+//     console.log(e.target)
+//     if(e.target.closest('.item-li')){
+//         console.log(this.children)
+//         $$('.item-li').forEach(function(item){
+//             if(item.classList.contains('btn-primary'))
+//                 item.classList.remove('btn-primary')
+//         })
+//         e.target.classList.add('btn-primary')
+//     }
+// }
 
 $('.filter-btn-select-price').onclick = function (){
     console.log($('.select-filter-price-ul').classList)
@@ -63,36 +63,9 @@ $('.select-filter-price-ul').onclick = function (e){
     }
 }
 
-function SortThis(arg){
-    if(arg=='increase'){
-        let t = {}
-        for(i=0 ; i < product__list.length ; i++)
-            for(j=i+1 ; j< product__list.length ; j++){
-                if(product__list[j].price_real < product__list[i].price_real){
-                    t = product__list[i] 
-                    product__list[i] = product__list[j] 
-                    product__list[j] = t
-                }
-            }
-        $('.product__item-ul').innerHTML =""
-        for(item of product__list)
-            InnerHTML_Product(item)
-    }
-    if(arg=='decrease'){
-        let t = {}
-        for(i=0 ; i < product__list.length ; i++)
-            for(j=i+1 ; j< product__list.length ; j++){
-                if(product__list[j].price_real > product__list[i].price_real){
-                    t = product__list[i] 
-                    product__list[i] = product__list[j] 
-                    product__list[j] = t
-                }
-            }
-        $('.product__item-ul').innerHTML =""
-        for(item of product__list)
-            InnerHTML_Product(item)
-    }
-}
+
+
+var product_Filter = []
 
 // SlideBarFuntion()
 let translateX = 0;
@@ -116,12 +89,16 @@ function SlidePrevFuntion(){
     // console.log(translateX)
 }
 
+let npp = 15;
+var curentPage =1;
+let pageQuantity = Math.ceil(product_Filter.length/npp);
+
 // Seacrch Goto Function
 $('.header__searchbar-goto').onclick = function(){
     let keyword = $('.header__searchbar-inp').value
     $('.search-result-inp').innerHTML = keyword
 
-    $('.product__item-ul').innerHTML =""
+
     let process_keyword = keyword.toLocaleLowerCase().replace(/ /g, "")
     // Replace keyword
     let newkeyword=''
@@ -134,39 +111,48 @@ $('.header__searchbar-goto').onclick = function(){
             newkeyword = process_keyword
         }
     // 
-        console.log(newkeyword)
+    console.log(newkeyword)
+    product_Filter = []
     product__list.forEach(function(item){
         let process_item = item.name.toLowerCase().replace(/\s/g, "")
         if(process_item.includes(newkeyword))
-            InnerHTML_Product(item)
+        product_Filter.push(item)       
     })
+    curentPage=1
+    InnerHTML(product_Filter)
 }
 
 // Filter_Category Funtion
 
 function Filter_Category(category){
-    // Mỗi lần Filter thì Reset lại Product list về 0
-    $('.product__item-ul').innerHTML =""
+
+    product_Filter = []
     if(category === 'ALL'){
         product__list.forEach(function(item){
-            InnerHTML_Product(item)
+
+            product_Filter.push(item)
         })
     }
-    product__list.forEach(function(item){
-        if(item.cate === category){
-            InnerHTML_Product(item)
-        }
-    })
+    else{
+        product__list.forEach(function(item){
+            if(item.cate === category){
+                product_Filter.push(item)
+            }
+        })
+    }
+    curentPage=1
+    $('.page__curent').innerHTML = curentPage
+    InnerHTML(product_Filter)
 }
 
 // Fillter_F Function
 
 function Filter_f(filter){
-    $('.product__item-ul').innerHTML =""
+    product_Filter = []
     if(filter === 'sale-off'){       
         product__list.forEach(function(item){
             if(item.price_saleoff > 0 ){
-                InnerHTML_Product(item)
+                product_Filter.push(item)
             }
         })
     }
@@ -180,8 +166,9 @@ function Filter_f(filter){
                     product__list[j] = t
                 }
             }
-        for(item of product__list)
-            InnerHTML_Product(item)
+        for(item of product__list){
+            product_Filter.push(item)
+        }
     }
 
     if(filter === 'lastest'){
@@ -194,43 +181,108 @@ function Filter_f(filter){
                     product__list[j] = t
                 }
             }
-        for(item of product__list)
-            InnerHTML_Product(item)
+        for(item of product__list){
+            product_Filter.push(item)
+        }
     }
+    curentPage=1
+    InnerHTML(product_Filter)
 }
+// Sort Price Funtion
+function SortThis(arg){
+    if(arg=='increase'){
+        let t = {}
+        for(i=0 ; i < product__list.length ; i++)
+            for(j=i+1 ; j< product__list.length ; j++){
+                if(product__list[j].price_real < product__list[i].price_real){
+                    t = product__list[i] 
+                    product__list[i] = product__list[j] 
+                    product__list[j] = t
+                }
+            }
 
+        product_Filter = []
 
+        for(item of product__list){
+            product_Filter.push(item)
+        }
+    }
+    if(arg=='decrease'){
+        let t = {}
+        for(i=0 ; i < product__list.length ; i++)
+            for(j=i+1 ; j< product__list.length ; j++){
+                if(product__list[j].price_real > product__list[i].price_real){
+                    t = product__list[i] 
+                    product__list[i] = product__list[j] 
+                    product__list[j] = t
+                }
+            }
 
+        product_Filter = []
+        for(item of product__list){
+            product_Filter.push(item)
+        }
+    }
+    curentPage=1
+    InnerHTML(product_Filter)
+}
+BtnNextPage.onclick = function(){
+    if(curentPage >= pageQuantity){
+        curentPage = 1
+    }
+    else{
+        curentPage++
+    }
+    $('.page__curent').innerHTML = curentPage
+    InnerHTML(product_Filter)
+}
+BtnPrevPage.onclick = function(){
+    if(curentPage <= 1){
+        curentPage = pageQuantity
+    }
+    else{
+        curentPage--
+    }
+    $('.page__curent').innerHTML =curentPage
+    InnerHTML(product_Filter)
+}   
 // InnerHTML Product Funtion
 
-function InnerHTML_Product(product){
-        // Inner thêm vào element
-        $('.product__item-ul').innerHTML += `<li class="product__item-li col l-2-4 m-3 c-6">
-            <div class="product__item-li-auth">
-                <a href="./cart.html" class="product__item-li-link">
-                    <img src="${product.img}" alt="" class="product__item-img">
-                    <div class="product__item-name title2">${product.name}</div>
-                    <div class="product__item-price">
-                        <span class="product__item-price--origin">${product.price_origin} đ</span>
-                        <span class="product__item-price--saleoff">${product.price_real} đ</span>
+function InnerHTML(products){
+        $('.product__item-ul').innerHTML =""
+        pageQuantity = Math.ceil(products.length/npp)
+        $('.page-sum').innerHTML = pageQuantity
+        for(i=0 ; i< products.length ; i++){
+            if((curentPage-1)*15 <= i && i < curentPage*15){
+                //
+                $('.product__item-ul').innerHTML += `<li class="product__item-li col l-2-4 m-3 c-6">
+                    <div class="product__item-li-auth">
+                        <a href="./cart.html" class="product__item-li-link">
+                            <img src="${products[i].img}" alt="" class="product__item-img">
+                            <div class="product__item-name title2">${products[i].name}</div>
+                            <div class="product__item-price">
+                                <span class="product__item-price--origin">${products[i].price_origin} đ</span>
+                                <span class="product__item-price--saleoff">${products[i].price_real} đ</span>
+                            </div>
+                            <div class="product__item-addition" >
+                                <i href="" class="far fa-heart"></i>
+                                <div class="star">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                </div>
+                                <span class="sold">Đã bán ${products[i].quantity}</span>
+                            </div>
+                            <div class="product__item-address">Ha Noi</div>
+                        </a>
+                        <div class="product__item-like">Yêu thích</div>
+                        <div class="product__item-sale-percent">${Math.round(products[i].price_saleoff/products[i].price_origin*100)}% GIẢM</div>
                     </div>
-                    <div class="product__item-addition" >
-                        <i href="" class="far fa-heart"></i>
-                        <div class="star">
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                        </div>
-                        <span class="sold">Đã bán ${product.quantity}</span>
-                    </div>
-                    <div class="product__item-address">Ha Noi</div>
-                </a>
-                <div class="product__item-like">Yêu thích</div>
-                <div class="product__item-sale-percent">${Math.round(product.price_saleoff/product.price_origin*100)}% GIẢM</div>
-            </div>
-        </li>`
+                </li>`
+            }
+        }
 }
 
 function documentLoaded(){
@@ -255,7 +307,7 @@ function documentLoaded(){
         UserAccount.style ="display: none"
     }
     
-    // Filter_Category('ALL')
+    Filter_Category('ALL')
 
     for(i=0; i< NumberProductCart ; i++ ) {
         $('.cart-list-ul').innerHTML += `<li class="cart-list-li" id="cartitem-1">
@@ -361,25 +413,7 @@ CategoryList.onclick = function(e) {
         e.target.style = 'color: var(--primary-color); font-size: 105%;'
     }
 }
-let curentPage = 1;
-BtnNextPage.onclick = function(){
-    if(curentPage >= pageQuantity){
-        curentPage = 1
-    }
-    else{
-        curentPage++
-    }
-    $('.page__current').innerHTML =curentPage
-}
-BtnPrevPage.onclick = function(){
-    if(curentPage <= 1){
-        curentPage = pageQuantity
-    }
-    else{
-        curentPage--
-    }
-    $('.page__current').innerHTML =curentPage
-}
+
 // $$ chọn các phần tử con (.btn) của phần tử cha (.product__filter-f)
 let FilterZone =  $('.product__filter-f')
 let ChainOf_FilterBtn = $$('.product__filter-f > .btn')

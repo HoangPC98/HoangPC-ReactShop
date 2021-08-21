@@ -9,7 +9,7 @@ let name_re = ['8 Pro','6 Pro','7 Pro','7i']
 let name_all =[name_ip, name_ss, name_op, name_vi, name_mi, name_re]
 console.log(name_all)
 let rangeOf_price_o = [29990000, 27990000, 27490000, 24490000, 22990000, 19990000, 17490000, 14490000]
-let rangeOf_price_s = [800000, 1200000, 2500000, 3000000, 4500000, 0, 0, 0, 0, 0, 0]
+let rangeOf_price_s = [800000, 1200000, 2500000, 3000000, 4500000, 0, 0]
 
 let index = 0
 let product__list = []
@@ -32,7 +32,8 @@ for(i=0; i< name_all.length ; i++){
                 price_real: price_r,
                 quantity: Math.floor(Math.random()*299),
                 cate: category[i],
-                img: `./img/product-list-img/${name_all[i][j]}.png`       
+                img: `./img/product-list-img/${name_all[i][j]}.png`,
+                stt: 0   
             }
         )
     }
