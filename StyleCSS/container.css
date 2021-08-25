@@ -158,7 +158,8 @@
 }
 .product__item-img{
     width: 100%;
-    height: 219px;    
+    height: fit-content; 
+    object-fit: fill;   
 }
 .product__item-addition{
     background-color: rgb(255, 255, 255);
@@ -299,6 +300,7 @@
 .slide-img{
     width:  100%;
     height: fit-content;
+    object-fit: fill;
 }
 
 .nextto-img{

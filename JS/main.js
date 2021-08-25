@@ -110,6 +110,9 @@ $('.header__searchbar-goto').onclick = function(){
     InnerHTML(product_Filter)
 }
 
+
+
+
 // Filter_Category Funtion
 
 function Filter_Category(category){
@@ -225,6 +228,28 @@ $('.page-list').onclick = function(e){
     })
     $$('.page-item')[curentPage-1].classList.add('btn-primary')
 }
+
+function Process(price){
+    let n = price.toString().split('').reverse()
+    let newstr = []
+    for(i = 0 ; i < n.length ; i++){
+        if( i!=0 && (i)%3===0 ){
+            newstr.push('.',n[i])
+        }
+        else{
+            newstr.push(n[i])
+        }
+    }
+    n = newstr.reverse().join('')
+    return n
+}
+
+product__list.map(function(item){
+    item.price_real = Process(item.price_real)
+    item.price_origin = Process(item.price_origin)
+})
+
+
 // InnerHTML Product Funtion
 function InnerHTML(products){
         $('.product__item-ul').innerHTML =""
@@ -234,16 +259,25 @@ function InnerHTML(products){
             $('.page-list').innerHTML += `<li class="page-item item-li">${ind}</li>`
         }
         $('.page-sum').innerHTML = pageQuantity
+        let sale_p = ''
         for(i=0 ; i< products.length ; i++){
             if((curentPage-1)*npp <= i && i < curentPage*npp){
                 //
+                if(products[i].sale_percent != 0)
+                {
+                    console.log('saleeee')
+                    sale_p = `<div class="product__item-sale-percent show">${products[i].sale_percent}% GIẢM</div>`
+                }
+                else    
+                    products[i].price_origin = ''
+
                 $('.product__item-ul').innerHTML += `<li class="product__item-li col l-2-4 m-3 c-6">
                     <div class="product__item-li-auth">
                         <a href="./cart.html" class="product__item-li-link">
                             <img src="${products[i].img}" alt="" class="product__item-img">
                             <div class="product__item-name title2">${products[i].name}</div>
                             <div class="product__item-price">
-                                <span class="product__item-price--origin">${products[i].price_origin} đ</span>
+                                <span class="product__item-price--origin">${products[i].price_origin} </span>
                                 <span class="product__item-price--saleoff">${products[i].price_real} đ</span>
                             </div>
                             <div class="product__item-addition" >
@@ -260,9 +294,10 @@ function InnerHTML(products){
                             <div class="product__item-address">Ha Noi</div>
                         </a>
                         <div class="product__item-like">Yêu thích</div>
-                        <div class="product__item-sale-percent">${Math.round(products[i].price_saleoff/products[i].price_origin*100)}% GIẢM</div>
+                        ${sale_p}
                     </div>
                 </li>`
+   
             }
         }
 }
@@ -321,7 +356,7 @@ function documentLoaded(){
          <i class="fas fa-times"></i>
         </li>`
     }
-
+    
     $$('.page__btn-next').forEach(function(item){
         item.onclick = function(){
             if(curentPage >= pageQuantity){
